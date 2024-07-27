@@ -1,5 +1,12 @@
+import {
+  NgOptimizedImage,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+} from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +16,18 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'appTest';
+  counter: number = 0;
+  private subscription!: Subscription;
+
+  ngOnInit() {
+    this.subscription = interval(1000).subscribe(() => {
+      this.counter++;
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 }
